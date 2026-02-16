@@ -57,15 +57,11 @@ async def telegram_webhook(request: Request):
 
 @app.on_event("startup")
 async def on_startup():
-    """Действия при запуске приложения."""
-    logger.info("Starting Food Vision Bot...")
-    
-    # Инициализируем бота
     await bot_application.initialize()
     await bot_application.start()
-    await bot_application.updater.start_polling()
-    
-    logger.info(f"Bot is ready! Webhook URL: /webhook/{settings.TELEGRAM_BOT_TOKEN}")
+    webhook_url = f"https://{ВАШ_ДОМЕН}/webhook/{settings.TELEGRAM_BOT_TOKEN}"
+    await bot_application.bot.set_webhook(url=webhook_url)
+    logger.info(f"Webhook set to {webhook_url}")
 
 @app.on_event("shutdown")
 async def on_shutdown():
